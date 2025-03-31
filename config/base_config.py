@@ -9,22 +9,45 @@
 # 使用本代码即表示您同意遵守上述原则和LICENSE中的所有条款。
 
 
+from config.simple_config import (
+    小红书笔记,
+    抖音,
+    快手,
+    哔哩哔哩,
+    微博,
+    微博作者,
+    贴吧,
+    贴吧名称,
+    贴吧作者,
+    小红书作者,
+    抖音作者,
+    B站作者,
+    快手作者,
+    抓取平台,
+    抓取类型,
+    关键词查询,
+)
+
 # --platform {xhs,dy,ks,bili,wb,tieba,zhihu}
 
 # 基础配置
-PLATFORM = "wb"
-KEYWORDS = "编程副业,编程兼职"  # 关键词搜索配置，以英文逗号分隔
+PLATFORM = 抓取平台 or "xhs"
+KEYWORDS = 关键词查询 or "编程副业,编程兼职"  # 关键词搜索配置，以英文逗号分隔
+# 爬取类型，search(关键词搜索) | detail(帖子详情)| creator(创作者主页数据)
+CRAWLER_TYPE = 抓取类型 or "detail"
+
 LOGIN_TYPE = "qrcode"  # qrcode or phone or cookie
 COOKIES = ""
+
 # 具体值参见media_platform.xxx.field下的枚举值，暂时只支持小红书
 SORT_TYPE = "popularity_descending"
+
 # 具体值参见media_platform.xxx.field下的枚举值，暂时只支持抖音
 PUBLISH_TIME_TYPE = 0
-CRAWLER_TYPE = (
-    "detail"  # 爬取类型，search(关键词搜索) | detail(帖子详情)| creator(创作者主页数据)
-)
+
+
 # 自定义User Agent（暂时仅对XHS有效）
-UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0'
+UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0"
 
 # 是否开启 IP 代理
 ENABLE_IP_PROXY = False
@@ -83,75 +106,73 @@ ENABLE_GET_SUB_COMMENTS = True
 # ]
 
 # 指定小红书需要爬虫的笔记URL列表, 目前要携带xsec_token和xsec_source参数
-XHS_SPECIFIED_NOTE_URL_LIST = [
+XHS_SPECIFIED_NOTE_URL_LIST = 小红书笔记 or [
     "https://www.xiaohongshu.com/explore/66fad51c000000001b0224b8?xsec_token=AB3rO-QopW5sgrJ41GwN01WCXh6yWPxjSoFI9D5JIMgKw=&xsec_source=pc_search"
     # ........................
 ]
 
 # 指定抖音需要爬取的ID列表
-DY_SPECIFIED_ID_LIST = [
+DY_SPECIFIED_ID_LIST = 抖音 or [
     "7280854932641664319",
     "7202432992642387233",
     # ........................
 ]
 
 # 指定快手平台需要爬取的ID列表
-KS_SPECIFIED_ID_LIST = ["3xf8enb8dbj6uig", "3x6zz972bchmvqe"]
+KS_SPECIFIED_ID_LIST = 快手 or ["3xf8enb8dbj6uig", "3x6zz972bchmvqe"]
 
 # 指定B站平台需要爬取的视频bvid列表
-BILI_SPECIFIED_ID_LIST = [
-    "BV1d54y1g7db",
-    "BV1Sz4y1U77N",
-    "BV14Q4y1n7jz",
+BILI_SPECIFIED_ID_LIST = 哔哩哔哩 or [
+    "BV1q5XGYiEkA",
     # ........................
 ]
 
 # 指定微博平台需要爬取的帖子列表
-WEIBO_SPECIFIED_ID_LIST = [
+WEIBO_SPECIFIED_ID_LIST = 微博 or [
     "P5UuVl48G",
     # ........................
 ]
 
 # 指定weibo创作者ID列表
-WEIBO_CREATOR_ID_LIST = [
+WEIBO_CREATOR_ID_LIST = 微博作者 or [
     "5533390220",
     # ........................
 ]
 
 # 指定贴吧需要爬取的帖子列表
-TIEBA_SPECIFIED_ID_LIST = []
+TIEBA_SPECIFIED_ID_LIST = 贴吧 or []
 
 # 指定贴吧名称列表，爬取该贴吧下的帖子
-TIEBA_NAME_LIST = [
+TIEBA_NAME_LIST = 贴吧名称 or [
     # "盗墓笔记"
 ]
 
 # 指定贴吧创作者URL列表
-TIEBA_CREATOR_URL_LIST = [
+TIEBA_CREATOR_URL_LIST = 贴吧作者 or [
     "https://tieba.baidu.com/home/main/?id=tb.1.7f139e2e.6CyEwxu3VJruH_-QqpCi6g&fr=frs",
     # ........................
 ]
 
 # 指定小红书创作者ID列表
-XHS_CREATOR_ID_LIST = [
+XHS_CREATOR_ID_LIST = 小红书作者 or [
     "63e36c9a000000002703502b",
     # ........................
 ]
 
 # 指定Dy创作者ID列表(sec_id)
-DY_CREATOR_ID_LIST = [
+DY_CREATOR_ID_LIST = 抖音作者 or [
     "MS4wLjABAAAATJPY7LAlaa5X-c8uNdWkvz0jUGgpw4eeXIwu_8BhvqE",
     # ........................
 ]
 
 # 指定bili创作者ID列表(sec_id)
-BILI_CREATOR_ID_LIST = [
+BILI_CREATOR_ID_LIST = B站作者 or [
     "20813884",
     # ........................
 ]
 
 # 指定快手创作者ID列表
-KS_CREATOR_ID_LIST = [
+KS_CREATOR_ID_LIST = 快手作者 or [
     "3x4sm73aye7jq7i",
     # ........................
 ]
@@ -165,14 +186,14 @@ ZHIHU_CREATOR_URL_LIST = [
 
 # 指定知乎需要爬取的帖子ID列表
 ZHIHU_SPECIFIED_ID_LIST = [
-    "https://www.zhihu.com/question/826896610/answer/4885821440", # 回答
-    "https://zhuanlan.zhihu.com/p/673461588", # 文章
-    "https://www.zhihu.com/zvideo/1539542068422144000" # 视频
+    "https://www.zhihu.com/question/826896610/answer/4885821440",  # 回答
+    "https://zhuanlan.zhihu.com/p/673461588",  # 文章
+    "https://www.zhihu.com/zvideo/1539542068422144000",  # 视频
 ]
 
 # 词云相关
 # 是否开启生成评论词云图
-ENABLE_GET_WORDCLOUD = False
+ENABLE_GET_WORDCLOUD = True
 # 自定义词语及其分组
 # 添加规则：xx:yy 其中xx为自定义添加的词组，yy为将xx该词组分到的组名。
 CUSTOM_WORDS = {
@@ -187,10 +208,10 @@ STOP_WORDS_FILE = "./docs/hit_stopwords.txt"
 FONT_PATH = "./docs/STZHONGS.TTF"
 
 # 爬取开始的天数，仅支持 bilibili 关键字搜索，YYYY-MM-DD 格式，若为 None 则表示不设置时间范围，按照默认关键字最多返回 1000 条视频的结果处理
-START_DAY = '2024-01-01'
+START_DAY = "2024-01-01"
 
 # 爬取结束的天数，仅支持 bilibili 关键字搜索，YYYY-MM-DD 格式，若为 None 则表示不设置时间范围，按照默认关键字最多返回 1000 条视频的结果处理
-END_DAY = '2024-01-01'
+END_DAY = "2024-01-01"
 
 # 是否开启按每一天进行爬取的选项，仅支持 bilibili 关键字搜索
 # 若为 False，则忽略 START_DAY 与 END_DAY 设置的值

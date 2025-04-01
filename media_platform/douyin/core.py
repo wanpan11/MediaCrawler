@@ -39,7 +39,7 @@ class DouYinCrawler(AbstractCrawler):
     def __init__(self) -> None:
         self.index_url = "https://www.douyin.com"
 
-    async def start(self) -> None:
+    async def start(self, target_ids: List[str] = None) -> None:
         playwright_proxy_format, httpx_proxy_format = None, None
         if config.ENABLE_IP_PROXY:
             ip_proxy_pool = await create_ip_pool(config.IP_PROXY_POOL_COUNT, enable_validate_ip=True)
@@ -77,7 +77,7 @@ class DouYinCrawler(AbstractCrawler):
                 await self.search()
             elif config.CRAWLER_TYPE == "detail":
                 # Get the information and comments of the specified post
-                await self.get_specified_awemes()
+                await self.get_specified_awemes(target_ids)
             elif config.CRAWLER_TYPE == "creator":
                 # Get the information and comments of the specified creator
                 await self.get_creators_and_videos()
@@ -129,17 +129,17 @@ class DouYinCrawler(AbstractCrawler):
             utils.logger.info(f"[DouYinCrawler.search] keyword:{keyword}, aweme_list:{aweme_list}")
             await self.batch_get_note_comments(aweme_list)
 
-    async def get_specified_awemes(self):
+    async def get_specified_awemes(self, target_ids: List[str] = None):
         """Get the information and comments of the specified post"""
         semaphore = asyncio.Semaphore(config.MAX_CONCURRENCY_NUM)
         task_list = [
-            self.get_aweme_detail(aweme_id=aweme_id, semaphore=semaphore) for aweme_id in config.DY_SPECIFIED_ID_LIST
+            self.get_aweme_detail(aweme_id=aweme_id, semaphore=semaphore) for aweme_id in  target_ids or config.DY_SPECIFIED_ID_LIST
         ]
         aweme_details = await asyncio.gather(*task_list)
         for aweme_detail in aweme_details:
             if aweme_detail is not None:
                 await douyin_store.update_douyin_aweme(aweme_detail)
-        await self.batch_get_note_comments(config.DY_SPECIFIED_ID_LIST)
+        await self.batch_get_note_comments(target_ids or config.DY_SPECIFIED_ID_LIST)
 
     async def get_aweme_detail(self, aweme_id: str, semaphore: asyncio.Semaphore) -> Any:
         """Get note detail"""

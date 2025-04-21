@@ -131,15 +131,17 @@ class DouYinCrawler(AbstractCrawler):
 
     async def get_specified_awemes(self, target_ids: List[str] = None):
         """Get the information and comments of the specified post"""
+        merge_target_list = target_ids or config.DY_SPECIFIED_ID_LIST
+
         semaphore = asyncio.Semaphore(config.MAX_CONCURRENCY_NUM)
         task_list = [
-            self.get_aweme_detail(aweme_id=aweme_id, semaphore=semaphore) for aweme_id in  target_ids or config.DY_SPECIFIED_ID_LIST
+            self.get_aweme_detail(aweme_id=aweme_id, semaphore=semaphore) for aweme_id in merge_target_list
         ]
         aweme_details = await asyncio.gather(*task_list)
         for aweme_detail in aweme_details:
             if aweme_detail is not None:
                 await douyin_store.update_douyin_aweme(aweme_detail)
-        await self.batch_get_note_comments(target_ids or config.DY_SPECIFIED_ID_LIST)
+        await self.batch_get_note_comments(merge_target_list)
 
     async def get_aweme_detail(self, aweme_id: str, semaphore: asyncio.Semaphore) -> Any:
         """Get note detail"""

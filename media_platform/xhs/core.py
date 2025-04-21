@@ -45,7 +45,7 @@ class XiaoHongShuCrawler(AbstractCrawler):
         # self.user_agent = utils.get_user_agent()
         self.user_agent = config.UA if config.UA else "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
 
-    async def start(self) -> None:
+    async def start(self, target_ids: List[str] = None) -> None:
         playwright_proxy_format, httpx_proxy_format = None, None
         if config.ENABLE_IP_PROXY:
             ip_proxy_pool = await create_ip_pool(
@@ -99,7 +99,7 @@ class XiaoHongShuCrawler(AbstractCrawler):
                 await self.search()
             elif config.CRAWLER_TYPE == "detail":
                 # Get the information and comments of the specified post
-                await self.get_specified_notes()
+                await self.get_specified_notes(target_ids)
             elif config.CRAWLER_TYPE == "creator":
                 # Get creator's information and their notes and comments
                 await self.get_creators_and_notes()
@@ -235,15 +235,17 @@ class XiaoHongShuCrawler(AbstractCrawler):
             if note_detail:
                 await xhs_store.update_xhs_note(note_detail)
 
-    async def get_specified_notes(self):
+    async def get_specified_notes(self, target_ids: List[str] = None):
         """
         Get the information and comments of the specified post
         must be specified note_id, xsec_source, xsec_token⚠️⚠️⚠️
         Returns:
 
         """
+        merge_target_list = target_ids or config.XHS_SPECIFIED_NOTE_URL_LIST
+
         get_note_detail_task_list = []
-        for full_note_url in config.XHS_SPECIFIED_NOTE_URL_LIST:
+        for full_note_url in merge_target_list:
             note_url_info: NoteUrlInfo = parse_note_info_from_note_url(full_note_url)
             utils.logger.info(
                 f"[XiaoHongShuCrawler.get_specified_notes] Parse note url info: {note_url_info}"

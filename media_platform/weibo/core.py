@@ -145,16 +145,17 @@ class WeiboCrawler(AbstractCrawler):
         get specified notes info
         :return:
         """
+        merge_target_list = target_ids or config.WEIBO_SPECIFIED_ID_LIST
+
         semaphore = asyncio.Semaphore(config.MAX_CONCURRENCY_NUM)
         task_list = [
-            self.get_note_info_task(note_id=note_id, semaphore=semaphore) for note_id in
-           target_ids or config.WEIBO_SPECIFIED_ID_LIST
+            self.get_note_info_task(note_id=note_id, semaphore=semaphore) for note_id in merge_target_list
         ]
         video_details = await asyncio.gather(*task_list)
         for note_item in video_details:
             if note_item:
                 await weibo_store.update_weibo_note(note_item)
-        await self.batch_get_notes_comments(target_ids or config.WEIBO_SPECIFIED_ID_LIST)
+        await self.batch_get_notes_comments(merge_target_list)
 
     async def get_note_info_task(self, note_id: str, semaphore: asyncio.Semaphore) -> Optional[Dict]:
         """

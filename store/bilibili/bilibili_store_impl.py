@@ -125,7 +125,7 @@ class BiliDbStoreImplement(AbstractStore):
         video_id = content_item.get("video_id")
         video_detail: Dict = await query_content_by_content_id(content_id=video_id)
         if not video_detail:
-            content_item["add_ts"] = utils.get_current_timestamp()
+            #content_item["add_ts"] = utils.get_current_timestamp()
             await add_new_content(content_item)
         else:
             await update_content_by_content_id(video_id, content_item=content_item)
@@ -146,7 +146,7 @@ class BiliDbStoreImplement(AbstractStore):
         comment_id = comment_item.get("comment_id")
         comment_detail: Dict = await query_comment_by_comment_id(comment_id=comment_id)
         if not comment_detail:
-            comment_item["add_ts"] = utils.get_current_timestamp()
+            #comment_item["add_ts"] = utils.get_current_timestamp()
             await add_new_comment(comment_item)
         else:
             await update_comment_by_comment_id(comment_id, comment_item=comment_item)
@@ -167,7 +167,7 @@ class BiliDbStoreImplement(AbstractStore):
         creator_id = creator.get("user_id")
         creator_detail: Dict = await query_creator_by_creator_id(creator_id=creator_id)
         if not creator_detail:
-            creator["add_ts"] = utils.get_current_timestamp()
+           # creator["add_ts"] = utils.get_current_timestamp()
             await add_new_creator(creator)
         else:
             await update_creator_by_creator_id(creator_id,creator_item=creator)

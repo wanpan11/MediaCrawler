@@ -12,17 +12,16 @@
 import os
 
 # mysql config
-RELATION_DB_PWD = os.getenv("RELATION_DB_PWD", "123456")
+RELATION_DB_PWD = os.getenv("RELATION_DB_PWD", "mysql123")
 RELATION_DB_USER = os.getenv("RELATION_DB_USER", "root")
-RELATION_DB_HOST = os.getenv("RELATION_DB_HOST", "localhost")
-RELATION_DB_PORT = os.getenv("RELATION_DB_PORT", 3306)
+RELATION_DB_HOST = os.getenv("RELATION_DB_HOST", "172.16.101.233")
+RELATION_DB_PORT = os.getenv("RELATION_DB_PORT", 31741)
 RELATION_DB_NAME = os.getenv("RELATION_DB_NAME", "media_crawler")
 
-
 # redis config
-REDIS_DB_HOST = "127.0.0.1"  # your redis host
-REDIS_DB_PWD = os.getenv("REDIS_DB_PWD", "123456")  # your redis password
-REDIS_DB_PORT = os.getenv("REDIS_DB_PORT", 6379)  # your redis port
+REDIS_DB_HOST = "172.16.101.233"  # your redis host
+REDIS_DB_PWD = os.getenv("REDIS_DB_PWD", "redis123")  # your redis password
+REDIS_DB_PORT = os.getenv("REDIS_DB_PORT", 31130)  # your redis port
 REDIS_DB_NUM = os.getenv("REDIS_DB_NUM", 0)  # your redis db num
 
 # cache type

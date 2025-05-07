@@ -84,10 +84,10 @@ class AsyncMysqlDB:
             upsets.append(s)
             values.append(v)
         upsets = ','.join(upsets)
-        sql = 'UPDATE %s SET %s WHERE %s="%s"' % (
+        sql = 'UPDATE %s SET %s WHERE %s="%s" AND website="%s"' % (
             table_name,
             upsets,
-            field_where, value_where,
+            field_where, value_where,updates['website']
         )
         async with self.__pool.acquire() as conn:
             async with conn.cursor() as cur:

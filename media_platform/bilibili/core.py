@@ -298,7 +298,7 @@ class BilibiliCrawler(AbstractCrawler):
                 if video_aid:
                     video_aids_list.append(video_aid)
                 await bilibili_store.update_bilibili_video(video_detail)
-                await bilibili_store.update_up_info(video_detail)
+               # await bilibili_store.update_up_info(video_detail)
                 await self.get_bilibili_video(video_detail, semaphore)
         await self.batch_get_video_comments(video_aids_list)
 

@@ -98,7 +98,7 @@ KS_SPECIFIED_ID_LIST = ["3xq43u5rvbnciuw"]
 
 # 指定B站平台需要爬取的视频bvid列表
 BILI_SPECIFIED_ID_LIST = [
-    "BV13aVFzBEv3",
+    "BV1ZdLJz6Evs",
      # "BV1mdG1zRE1L",
      # "BV1kMRBYWEmS",
     # ........................

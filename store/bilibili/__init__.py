@@ -8,18 +8,17 @@
 # 详细许可条款请参阅项目根目录下的LICENSE文件。  
 # 使用本代码即表示您同意遵守上述原则和LICENSE中的所有条款。
 from datetime import datetime
+from typing import List
+
+from var import source_keyword_var
+from .bilibili_store_impl import *
+from .bilibilli_store_video import *
+
+
 # -*- coding: utf-8 -*-
 # @Author  : relakkes@gmail.com
 # @Time    : 2024/1/14 19:34
 # @Desc    :
-
-from typing import List
-
-import config
-from var import source_keyword_var
-
-from .bilibili_store_impl import *
-from .bilibilli_store_video import *
 
 
 class BiliStoreFactory:
@@ -49,7 +48,7 @@ async def update_bilibili_video(video_item: Dict):
         "website": "哔哩哔哩",
         "title": video_item_view.get("title", "")[:500],
         "desc": video_item_view.get("desc", "")[:500],
-        "publish_time":  datetime.fromtimestamp(video_item_view.get("pubdate")).strftime("%Y-%m-%d %H:%M:%S"),
+        "publish_time": datetime.fromtimestamp(video_item_view.get("pubdate")).strftime("%Y-%m-%d %H:%M:%S"),
         "user_id": str(video_user_info.get("mid")),
         "nickname": video_user_info.get("name"),
         "liked_count": str(video_item_stat.get("like", "")),
@@ -65,24 +64,24 @@ async def update_bilibili_video(video_item: Dict):
     await BiliStoreFactory.create_store().store_content(content_item=save_content_item)
 
 
-async def update_up_info(video_item: Dict):  
+async def update_up_info(video_item: Dict):
     video_item_card_list: Dict = video_item.get("Card")
-    video_item_card: Dict = video_item_card_list.get("card") 
+    video_item_card: Dict = video_item_card_list.get("card")
     saver_up_info = {
-        "user_id": str(video_item_card.get("mid")), 
-        "nickname": video_item_card.get("name"),  
+        "user_id": str(video_item_card.get("mid")),
+        "nickname": video_item_card.get("name"),
         "avatar": video_item_card.get("face"),
         "website": "哔哩哔哩",
-        "last_modify_ts": utils.get_current_timestamp(),  
-        "total_fans": video_item_card.get("fans"), 
-        "total_liked": video_item_card_list.get("like_num"), 
-        "user_rank": video_item_card.get("level_info").get("current_level"),  
-        "is_official": video_item_card.get("official_verify").get("type"), 
+        "last_modify_ts": utils.get_current_timestamp(),
+        "total_fans": video_item_card.get("fans"),
+        "total_liked": video_item_card_list.get("like_num"),
+        "user_rank": video_item_card.get("level_info").get("current_level"),
+        "is_official": video_item_card.get("official_verify").get("type"),
     }
     utils.logger.info(
         f"[store.bilibili.update_up_info] bilibili user_id:{video_item_card.get('mid')}")
     await BiliStoreFactory.create_store().store_creator(creator=saver_up_info)
-    
+
 
 async def batch_update_bilibili_video_comments(video_id: str, comments: List[Dict]):
     if not comments:

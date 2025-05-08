@@ -200,7 +200,7 @@ async def save_creator(user_id: str, creator: Dict):
         "last_modify_ts": utils.get_current_timestamp(), # 最后更新时间戳（MediaCrawler程序生成的，主要用途在db存储的时候记录一条记录最新更新时间）
     }
     utils.logger.info(f"[store.xhs.save_creator] creator:{local_db_item}")
-    await XhsStoreFactory.create_store().store_creator(local_db_item)
+  #  await XhsStoreFactory.create_store().store_creator(local_db_item)
 
 
 async def update_xhs_note_image(note_id, pic_content, extension_file_name):

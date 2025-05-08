@@ -16,13 +16,13 @@ RELATION_DB_PWD = os.getenv("RELATION_DB_PWD", "mysql123")
 RELATION_DB_USER = os.getenv("RELATION_DB_USER", "root")
 RELATION_DB_HOST = os.getenv("RELATION_DB_HOST", "172.16.101.233")
 RELATION_DB_PORT = os.getenv("RELATION_DB_PORT", 31741)
-RELATION_DB_NAME = os.getenv("RELATION_DB_NAME", "media_crawler")
+RELATION_DB_NAME = os.getenv("RELATION_DB_NAME", "market_data")
 
 # redis config
 REDIS_DB_HOST = "172.16.101.233"  # your redis host
 REDIS_DB_PWD = os.getenv("REDIS_DB_PWD", "redis123")  # your redis password
 REDIS_DB_PORT = os.getenv("REDIS_DB_PORT", 31130)  # your redis port
-REDIS_DB_NUM = os.getenv("REDIS_DB_NUM", 0)  # your redis db num
+REDIS_DB_NUM = os.getenv("REDIS_DB_NUM", 15)  # your redis db num
 
 # cache type
 CACHE_TYPE_REDIS = "redis"

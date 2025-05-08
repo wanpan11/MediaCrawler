@@ -104,4 +104,4 @@ async def save_creator(user_id: str, creator: Dict):
         "last_modify_ts": utils.get_current_timestamp(),
     }
     utils.logger.info(f"[store.kuaishou.save_creator] creator:{local_db_item}")
-    await KuaishouStoreFactory.create_store().store_creator(local_db_item)
+  #  await KuaishouStoreFactory.create_store().store_creator(local_db_item)

@@ -124,14 +124,14 @@ class DouyinDbStoreImplement(AbstractStore):
         from .douyin_store_sql import (add_new_content,
                                        query_content_by_content_id,
                                        update_content_by_content_id)
-        aweme_id = content_item.get("aweme_id")
-        aweme_detail: Dict = await query_content_by_content_id(content_id=aweme_id)
+        video_id = content_item.get("video_id")
+        aweme_detail: Dict = await query_content_by_content_id(content_id=video_id)
         if not aweme_detail:
-            content_item["add_ts"] = utils.get_current_timestamp()
+           # content_item["add_ts"] = utils.get_current_timestamp()
             if content_item.get("title"):
                 await add_new_content(content_item)
         else:
-            await update_content_by_content_id(aweme_id, content_item=content_item)
+            await update_content_by_content_id(video_id, content_item=content_item)
 
     async def store_comment(self, comment_item: Dict):
         """
@@ -148,7 +148,7 @@ class DouyinDbStoreImplement(AbstractStore):
         comment_id = comment_item.get("comment_id")
         comment_detail: Dict = await query_comment_by_comment_id(comment_id=comment_id)
         if not comment_detail:
-            comment_item["add_ts"] = utils.get_current_timestamp()
+          #  comment_item["add_ts"] = utils.get_current_timestamp()
             await add_new_comment(comment_item)
         else:
             await update_comment_by_comment_id(comment_id, comment_item=comment_item)
@@ -168,7 +168,7 @@ class DouyinDbStoreImplement(AbstractStore):
         user_id = creator.get("user_id")
         user_detail: Dict = await query_creator_by_user_id(user_id)
         if not user_detail:
-            creator["add_ts"] = utils.get_current_timestamp()
+           # creator["add_ts"] = utils.get_current_timestamp()
             await add_new_creator(creator)
         else:
             await update_creator_by_user_id(user_id, creator)

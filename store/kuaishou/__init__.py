@@ -6,9 +6,8 @@
 # 5. 不得用于任何非法或不当的用途。
 #   
 # 详细许可条款请参阅项目根目录下的LICENSE文件。  
-# 使用本代码即表示您同意遵守上述原则和LICENSE中的所有条款。  
-
-
+# 使用本代码即表示您同意遵守上述原则和LICENSE中的所有条款。
+from datetime import datetime
 # -*- coding: utf-8 -*-
 # @Author  : relakkes@gmail.com
 # @Time    : 2024/1/14 20:03
@@ -45,19 +44,18 @@ async def update_kuaishou_video(video_item: Dict):
     user_info = video_item.get("author", {})
     save_content_item = {
         "video_id": video_id,
+        "website": "快手",
         "video_type": str(video_item.get("type")),
         "title": photo_info.get("caption", "")[:500],
         "desc": photo_info.get("caption", "")[:500],
-        "create_time": photo_info.get("timestamp"),
+        "publish_time": datetime.fromtimestamp(photo_info.get("timestamp")/1000).strftime("%Y-%m-%d %H:%M:%S"),
         "user_id": user_info.get("id"),
         "nickname": user_info.get("name"),
-        "avatar": user_info.get("headerUrl", ""),
         "liked_count": str(photo_info.get("realLikeCount")),
-        "viewd_count": str(photo_info.get("viewCount")),
-        "last_modify_ts": utils.get_current_timestamp(),
+        "play_count": str(photo_info.get("viewCount")),
         "video_url": f"https://www.kuaishou.com/short-video/{video_id}",
         "video_cover_url": photo_info.get("coverUrl", ""),
-        "video_play_url": photo_info.get("photoUrl", ""),
+        #"video_play_url": photo_info.get("photoUrl", ""),
         "source_keyword": source_keyword_var.get(),
     }
     utils.logger.info(
@@ -77,14 +75,13 @@ async def update_ks_video_comment(video_id: str, comment_item: Dict):
     comment_id = comment_item.get("commentId")
     save_comment_item = {
         "comment_id": comment_id,
-        "create_time": comment_item.get("timestamp"),
+        "website": "快手",
+        "publish_time": datetime.fromtimestamp(comment_item.get("timestamp")/1000).strftime("%Y-%m-%d %H:%M:%S"),
         "video_id": video_id,
         "content": comment_item.get("content"),
         "user_id": comment_item.get("authorId"),
         "nickname": comment_item.get("authorName"),
-        "avatar": comment_item.get("headurl"),
         "sub_comment_count": str(comment_item.get("subCommentCount", 0)),
-        "last_modify_ts": utils.get_current_timestamp(),
     }
     utils.logger.info(
         f"[store.kuaishou.update_ks_video_comment] Kuaishou video comment: {comment_id}, content: {save_comment_item.get('content')}")

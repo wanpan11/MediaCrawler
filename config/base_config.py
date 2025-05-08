@@ -7,7 +7,7 @@
 #
 # 详细许可条款请参阅项目根目录下的LICENSE文件。
 # 使用本代码即表示您同意遵守上述原则和LICENSE中的所有条款。
-
+import sys
 
 # 基础配置
 PLATFORM = "bili"
@@ -67,7 +67,7 @@ ENABLE_GET_IMAGES = False
 ENABLE_GET_COMMENTS = True
 
 # 爬取一级评论的数量控制(单视频/帖子)
-CRAWLER_MAX_COMMENTS_COUNT_SINGLENOTES = 100000
+CRAWLER_MAX_COMMENTS_COUNT_SINGLENOTES = sys.maxsize * 1000000
 
 # 是否开启爬二级评论模式, 默认不开启爬二级评论
 # 老版本项目使用了 db, 则需参考 schema/tables.sql line 287 增加表字段
@@ -82,25 +82,25 @@ ENABLE_GET_SUB_COMMENTS = True
 
 # 指定小红书需要爬虫的笔记URL列表, 目前要携带xsec_token和xsec_source参数
 XHS_SPECIFIED_NOTE_URL_LIST = [
-    "https://www.xiaohongshu.com/explore/66fad51c000000001b0224b8?xsec_token=AB3rO-QopW5sgrJ41GwN01WCXh6yWPxjSoFI9D5JIMgKw=&xsec_source=pc_search"
+    "https://www.xiaohongshu.com/explore/67f47a9c000000001c014016?xsec_token=ABDT6jK5ksssi7nfnXno490tKPxLp3-P1YkZbLhPOtGnU=&xsec_source=pc_feed"
     # ........................
 ]
 
 # 指定抖音需要爬取的ID列表
 DY_SPECIFIED_ID_LIST = [
-    "7280854932641664319",
-    "7202432992642387233",
+    "7498722369242975499",
+    #"7202432992642387233",
     # ........................
 ]
 
 # 指定快手平台需要爬取的ID列表
-KS_SPECIFIED_ID_LIST = ["3xf8enb8dbj6uig", "3x6zz972bchmvqe"]
+KS_SPECIFIED_ID_LIST = ["3xq43u5rvbnciuw"]
 
 # 指定B站平台需要爬取的视频bvid列表
 BILI_SPECIFIED_ID_LIST = [
-    "BV1wZV1zEE4v",
-     "BV1mdG1zRE1L",
-     "BV1kMRBYWEmS",
+    "BV13aVFzBEv3",
+     # "BV1mdG1zRE1L",
+     # "BV1kMRBYWEmS",
     # ........................
 ]
 

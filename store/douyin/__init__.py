@@ -7,8 +7,7 @@
 #
 # 详细许可条款请参阅项目根目录下的LICENSE文件。
 # 使用本代码即表示您同意遵守上述原则和LICENSE中的所有条款。
-
-
+from datetime import datetime
 # -*- coding: utf-8 -*-
 # @Author  : relakkes@gmail.com
 # @Time    : 2024/1/14 18:46
@@ -67,25 +66,19 @@ async def update_douyin_aweme(aweme_item: Dict):
     user_info = aweme_item.get("author", {})
     interact_info = aweme_item.get("statistics", {})
     save_content_item = {
-        "aweme_id": aweme_id,
-        "aweme_type": str(aweme_item.get("aweme_type")),
+        "video_id": aweme_id,
+        "website": "抖音",
+        "video_type": str(aweme_item.get("aweme_type")),
         "title": aweme_item.get("desc", ""),
         "desc": aweme_item.get("desc", ""),
-        "create_time": aweme_item.get("create_time"),
+        "publish_time": datetime.fromtimestamp(aweme_item.get("create_time")).strftime("%Y-%m-%d %H:%M:%S"),
         "user_id": user_info.get("uid"),
-        "sec_uid": user_info.get("sec_uid"),
-        "short_user_id": user_info.get("short_id"),
-        "user_unique_id": user_info.get("unique_id"),
-        "user_signature": user_info.get("signature"),
         "nickname": user_info.get("nickname"),
-        "avatar": user_info.get("avatar_thumb", {}).get("url_list", [""])[0],
         "liked_count": str(interact_info.get("digg_count")),
-        "collected_count": str(interact_info.get("collect_count")),
-        "comment_count": str(interact_info.get("comment_count")),
+        "favorite_count": str(interact_info.get("collect_count")),
+        "comment": str(interact_info.get("comment_count")),
         "share_count": str(interact_info.get("share_count")),
-        "ip_location": aweme_item.get("ip_label", ""),
-        "last_modify_ts": utils.get_current_timestamp(),
-        "aweme_url": f"https://www.douyin.com/video/{aweme_id}",
+        "video_url": f"https://www.douyin.com/video/{aweme_id}",
         "source_keyword": source_keyword_var.get(),
     }
     utils.logger.info(
@@ -122,22 +115,15 @@ async def update_dy_aweme_comment(aweme_id: str, comment_item: Dict):
     )
     save_comment_item = {
         "comment_id": comment_id,
-        "create_time": comment_item.get("create_time"),
-        "ip_location": comment_item.get("ip_label", ""),
-        "aweme_id": aweme_id,
+        "website": "抖音",
+        "publish_time":  datetime.fromtimestamp(comment_item.get("create_time")).strftime("%Y-%m-%d %H:%M:%S"),
+        "video_id": aweme_id,
         "content": comment_item.get("text"),
-        "user_id": user_info.get("uid"),
-        "sec_uid": user_info.get("sec_uid"),
-        "short_user_id": user_info.get("short_id"),
-        "user_unique_id": user_info.get("unique_id"),
-        "user_signature": user_info.get("signature"),
         "nickname": user_info.get("nickname"),
-        "avatar": avatar_info.get("url_list", [""])[0],
         "sub_comment_count": str(comment_item.get("reply_comment_total", 0)),
-        "like_count": (
+        "liked_count": (
             comment_item.get("digg_count") if comment_item.get("digg_count") else 0
         ),
-        "last_modify_ts": utils.get_current_timestamp(),
         "parent_comment_id": parent_comment_id,
         "pictures": ",".join(_extract_comment_image_list(comment_item)),
     }
@@ -156,6 +142,7 @@ async def save_creator(user_id: str, creator: Dict):
     avatar_uri = user_info.get("avatar_300x300", {}).get("uri")
     local_db_item = {
         "user_id": user_id,
+        "website": "抖音",
         "nickname": user_info.get("nickname"),
         "gender": gender_map.get(user_info.get("gender"), "未知"),
         "avatar": f"https://p3-pc.douyinpic.com/img/{avatar_uri}"

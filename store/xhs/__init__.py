@@ -6,9 +6,8 @@
 # 5. 不得用于任何非法或不当的用途。
 #   
 # 详细许可条款请参阅项目根目录下的LICENSE文件。  
-# 使用本代码即表示您同意遵守上述原则和LICENSE中的所有条款。  
-
-
+# 使用本代码即表示您同意遵守上述原则和LICENSE中的所有条款。
+from datetime import datetime
 # -*- coding: utf-8 -*-
 # @Author  : relakkes@gmail.com
 # @Time    : 2024/1/14 17:34
@@ -87,27 +86,22 @@ async def update_xhs_note(note_item: Dict):
     video_url = ','.join(get_video_url_arr(note_item))
 
     local_db_item = {
-        "note_id": note_item.get("note_id"), # 帖子id
-        "type": note_item.get("type"), # 帖子类型
+        "video_id": note_item.get("note_id"), # 帖子id
+        "video_type": note_item.get("type"), # 帖子类型
+        "website": "小红书", # 帖子类型
         "title": note_item.get("title") or note_item.get("desc", "")[:255], # 帖子标题
         "desc": note_item.get("desc", ""), # 帖子描述
-        "video_url": video_url, # 帖子视频url
-        "time": note_item.get("time"), # 帖子发布时间
-        "last_update_time": note_item.get("last_update_time", 0), # 帖子最后更新时间
+        "publish_time": datetime.fromtimestamp(note_item.get("time")/1000).strftime("%Y-%m-%d %H:%M:%S"), # 帖子发布时间
+        #"last_update_time": note_item.get("last_update_time", 0), # 帖子最后更新时间
         "user_id": user_info.get("user_id"), # 用户id
         "nickname": user_info.get("nickname"), # 用户昵称
-        "avatar": user_info.get("avatar"), # 用户头像
         "liked_count": interact_info.get("liked_count"), # 点赞数
-        "collected_count": interact_info.get("collected_count"), # 收藏数
-        "comment_count": interact_info.get("comment_count"), # 评论数
+        "favorite_count": interact_info.get("collected_count"), # 收藏数
+        "comment": interact_info.get("comment_count"), # 评论数
         "share_count": interact_info.get("share_count"), # 分享数
-        "ip_location": note_item.get("ip_location", ""), # ip地址
-        "image_list": ','.join([img.get('url', '') for img in image_list]), # 图片url
-        "tag_list": ','.join([tag.get('name', '') for tag in tag_list if tag.get('type') == 'topic']), # 标签
-        "last_modify_ts": utils.get_current_timestamp(), # 最后更新时间戳（MediaCrawler程序生成的，主要用途在db存储的时候记录一条记录最新更新时间）
-        "note_url": f"https://www.xiaohongshu.com/explore/{note_id}?xsec_token={note_item.get('xsec_token')}&xsec_source=pc_search", # 帖子url
+        "video_url": f"https://www.xiaohongshu.com/explore/{note_id}?xsec_token={note_item.get('xsec_token')}&xsec_source=pc_search", # 帖子url
         "source_keyword": source_keyword_var.get(), # 搜索关键词
-        "xsec_token": note_item.get("xsec_token"), # xsec_token
+       # "xsec_token": note_item.get("xsec_token"), # xsec_token
     }
     utils.logger.info(f"[store.xhs.update_xhs_note] xhs note: {local_db_item}")
     await XhsStoreFactory.create_store().store_content(local_db_item)
@@ -145,18 +139,16 @@ async def update_xhs_note_comment(note_id: str, comment_item: Dict):
     target_comment = comment_item.get("target_comment", {})
     local_db_item = {
         "comment_id": comment_id, # 评论id
-        "create_time": comment_item.get("create_time"), # 评论时间
-        "ip_location": comment_item.get("ip_location"), # ip地址
-        "note_id": note_id, # 帖子id
+        "website": "小红书",  # 帖子类型
+        "publish_time": datetime.fromtimestamp(comment_item.get("create_time")/1000).strftime("%Y-%m-%d %H:%M:%S"), # 评论时间
+        "video_id": note_id, # 帖子id
         "content": comment_item.get("content"), # 评论内容
         "user_id": user_info.get("user_id"), # 用户id
         "nickname": user_info.get("nickname"), # 用户昵称
-        "avatar": user_info.get("image"), # 用户头像
         "sub_comment_count": comment_item.get("sub_comment_count", 0), # 子评论数
         "pictures": ",".join(comment_pictures), # 评论图片
         "parent_comment_id": target_comment.get("id", 0), # 父评论id
-        "last_modify_ts": utils.get_current_timestamp(), # 最后更新时间戳（MediaCrawler程序生成的，主要用途在db存储的时候记录一条记录最新更新时间）
-        "like_count": comment_item.get("like_count", 0),
+        "liked_count": comment_item.get("like_count", 0),
     }
     utils.logger.info(f"[store.xhs.update_xhs_note_comment] xhs note comment:{local_db_item}")
     await XhsStoreFactory.create_store().store_comment(local_db_item)
